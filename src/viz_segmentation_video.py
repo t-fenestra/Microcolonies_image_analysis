@@ -85,4 +85,42 @@ def segmentation_check_video(images,images_denoised,images_binary,file_prefix):
 
 
 
-    anim.save('../results/video_segmentation/Experiment_{}.mp4'.format(file_prefix), fps=fps, extra_args=['-vcodec', 'libx264'])
+    anim.save('../data/Experiment_{}.mp4'.format(file_prefix), fps=fps, extra_args=['-vcodec', 'libx264'])
+    print('Done!')
+    
+    
+    
+def segmentation_one_img_video(images,file_prefix):
+    sns.set(font_scale=2.0)
+    fps = 2
+    nFrames=images.shape[0]
+
+   ###===== init plot ==============================#
+    # First set up the figure, the axis, and the plot element we want to animate
+    frame=0
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(10,10),constrained_layout=True)
+    plt.suptitle(file_prefix)
+
+    # original
+    im1=ax.imshow(images[frame],cmap="gray")
+    ax.set_title("original")
+    ax.axis("off")
+    show_size_bar(ax,images)
+    
+    
+
+    ####===== animated fundtion ==============================#
+    def animate_func(frame):
+        im1.set_data(images[frame]) 
+        return [im1]
+
+    anim = animation.FuncAnimation( fig, 
+                                animate_func, 
+                                frames = nFrames,
+                                interval = 1000 / fps, # in ms
+                                )
+
+
+
+    anim.save('../data/Experiment_{}.mp4'.format(file_prefix), fps=fps, extra_args=['-vcodec', 'libx264'])
+    print('Done!')

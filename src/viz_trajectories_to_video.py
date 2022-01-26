@@ -15,6 +15,7 @@ from scipy import optimize
 from scipy.signal import find_peaks
 
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import matplotlib
 from matplotlib.pyplot import cm
 from matplotlib.patches import Rectangle
@@ -49,6 +50,31 @@ def viz_trajectories(images_binary,tracks,frame,ax):
     tracks_frame=tracks[tracks['frame']<=frame]
     for id,group in tracks_frame.groupby("particle"):
         ax.plot(group['x'],group['y'],lw=2,color='red')
+
+def plot_bounding_box(bound_box,label,ax):
+    minr, minc, maxr, maxc = bound_box
+    rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,fill=False, edgecolor='red', linewidth=2)
+    ax.text(minc+10, minr+10, str(label), fontsize=12,color="cyan")
+    ax.add_patch(rect)
+        
+def one_traj_to_video(images_binary,tracks,bound_box,save_folder,file_prefix):
+    sns.set(font_scale=1.5)
+    fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(20,20),constrained_layout=True)
+    ax.set_title(file_prefix +'/n'+"tracks")
+    camera = Camera(fig)
+
+
+    for frame in range(images_binary.shape[0]):
+        viz_trajectories(images_binary,tracks,frame,ax)
+        plot_bounding_box(bound_box,tracks['particle'].iloc[0],ax)
+        camera.snap()
+ 
+    #Creating the animation from captured frames
+    animation = camera.animate(interval = 200, repeat = True,
+                           repeat_delay = 500)
+
+    #Saving the animation
+    animation.save(save_folder+'/{}_tracking.mp4'.format(file_prefix))
             
 
 def trajectories_to_video(images_binary,tracks,save_folder,file_prefix):
@@ -68,3 +94,5 @@ def trajectories_to_video(images_binary,tracks,save_folder,file_prefix):
 
     #Saving the animation
     animation.save(save_folder+'/{}_tracking.mp4'.format(file_prefix))
+    
+    
