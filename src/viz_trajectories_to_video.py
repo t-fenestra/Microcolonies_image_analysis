@@ -77,7 +77,7 @@ def one_traj_to_video(images_binary,tracks,bound_box,save_folder,file_prefix):
     animation.save(save_folder+'/{}_tracking.mp4'.format(file_prefix))
             
 
-def trajectories_to_video(images_binary,tracks,save_folder,file_prefix):
+def trajectories_to_video(images_binary,tracks,dict_folders,file_prefix):
     sns.set(font_scale=1.5)
     fig,ax=plt.subplots(nrows=1,ncols=1,figsize=(20,20),constrained_layout=True)
     ax.set_title(file_prefix +'/n'+"tracks")
@@ -93,6 +93,6 @@ def trajectories_to_video(images_binary,tracks,save_folder,file_prefix):
                            repeat_delay = 500)
 
     #Saving the animation
-    animation.save(save_folder+'/{}_tracking.mp4'.format(file_prefix))
+    animation.save(dict_folders["video_trajectories"]+'{}_tracking.mp4'.format(file_prefix))
     
     

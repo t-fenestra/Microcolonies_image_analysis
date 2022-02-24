@@ -21,5 +21,4 @@ def tracking(df_measurements,fname):
 
     # filter out trajectories less than 5 frames
     clean_tracks = trackpy.filter_stubs(tracks,threshold=5)
-    clean_tracks.to_csv("../data/"+"tracks_overlay_id_{}.csv".format(fname))
     return clean_tracks

@@ -15,14 +15,15 @@ from sklearn.metrics import r2_score, median_absolute_error, mean_absolute_error
 from sklearn.metrics import median_absolute_error, mean_squared_error, mean_squared_log_error
 
 
-def plot_anchor_points(binary_images,tracks,file_prefix):
+def plot_anchor_points(binary_images,tracks,dict_folders,file_prefix):
     # create folder where density regions will be save
     # late it will be used for one trajectory video assemble
-    folder_to_save_region="../results/anchor_area_density_plot/"+file_prefix
+    folder_to_save_region=dict_folders["anchor_area_density_plot"]+file_prefix
+    print(folder_to_save_region)
     os.mkdir(folder_to_save_region)
     
     from matplotlib.backends.backend_pdf import PdfPages
-    pdf_file_name="../results/anchor_area_density_plot_pdf/Projection_plot_{}.pdf".format(file_prefix)
+    pdf_file_name=dict_folders["anchor_area_density_plot_pdf"]+"Projection_plot_{}.pdf".format(file_prefix)
     sns.set(font_scale=1.5)
 
     # create figures
@@ -79,7 +80,7 @@ def plot_anchor_points(binary_images,tracks,file_prefix):
     Anchor_df["type"][Anchor_df["overlapped_area_ratio"]<=0.50]="rotating"
     Anchor_df["type"][Anchor_df["overlapped_area_ratio"]==0]="moving"
     Anchor_df['file_prefix']=file_prefix
-    Anchor_df.to_csv("../results/anchor_area_csv/Anchor_area_{}.csv".format(file_prefix))
+    Anchor_df.to_csv(dict_folders["anchor_area_csv"]+"/Anchor_area_{}.csv".format(file_prefix))
     return Anchor_df
 
 

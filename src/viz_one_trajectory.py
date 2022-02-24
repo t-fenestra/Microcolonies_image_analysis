@@ -26,8 +26,8 @@ from celluloid import Camera
 
 
 
-def plot_density_plot(file_prefix,ax,anchor_ratio,particle,type_object):
-    anchor_map=io.imread("../results/anchor_area_density_plot/{}/Density_{}_{}.tiff".format(file_prefix,particle,file_prefix))
+def plot_density_plot(file_prefix,ax,anchor_ratio,particle,dict_folders,type_object):
+    anchor_map=io.imread(dict_folders["anchor_area_density_plot"]+"{}/Density_{}_{}.tiff".format(file_prefix,particle,file_prefix))
     ax.imshow(anchor_map,vmin=np.min(anchor_map),vmax=np.max(anchor_map),cmap='plasma')
     ax.set_title("type ={} \n anchor_ratio={:}".format(type_object,anchor_ratio))
     ax.axis("off")
@@ -133,7 +133,7 @@ def viz_trajectories(images_binary,tracks,frame,ax,min_row,min_col):
         
 
 
-def one_trajectory_viz_with_tracks(images_binary,traj,anchor_ratio,save_folder,file_prefix,type_object):
+def one_trajectory_viz_with_tracks(images_binary,traj,anchor_ratio,dict_folders,save_folder,file_prefix,type_object):
     
     ###========================================####
     ## cut box with trajectory
@@ -166,7 +166,7 @@ def one_trajectory_viz_with_tracks(images_binary,traj,anchor_ratio,save_folder,f
 
     for frame in range(traj_seg.shape[0]):
         viz_trajectories(traj_seg,traj,frame,ax[0],min_row,min_col)
-        plot_density_plot(file_prefix,ax[1],anchor_ratio,traj["particle"].iloc[0],type_object)
+        plot_density_plot(file_prefix,ax[1],anchor_ratio,traj["particle"].iloc[0],dict_folders,type_object)
         camera.snap()
  
     #Creating the animation from captured frames
